@@ -7,8 +7,11 @@ static bool ledState = true;
 
 #include <HX711.h>
 
-bool resetTareFlag();
-void checkTare();
+bool resetZeroFlag(int zero);
+void checkZero();
+bool resetCalibrateFlag(float calibration);
+void checkCalibrate();
+void initScale();
 
 
 // HX711.DOUT	- pin #A1
@@ -125,11 +128,18 @@ void setup() {
   
     // Init firebase.
     Firebase.begin(FIREBASE_HOST, FIREBASE_AUTH);
+
+    // Init scales.
+    initScale();
 }
 
 
 
-const String TARE_FLAG = "tareFlag";
+const String ZERO_FLAG = "zeroFlag";
+const String CALIBRATE_FLAG = "calibrateFlag";
+const String ZERO_POINT = "zeroPoint";
+const String CALIBRATION_POINT = "calibrationPoint";
+const String CALIBRATION_VALUE = "calibrationValue";
 
 int n = 0;
 
@@ -195,7 +205,9 @@ void loop() {
 //   Serial.println(name);
 //   delay(1000);
 
-   checkTare();
+   checkZero();
+   checkCalibrate();
+
 
     Serial.print("one reading:\t");
   Serial.print(scale.read(), 1);
@@ -212,43 +224,57 @@ void loop() {
     
 }
 
+
+#pragma region Calibrate methods
+
+void initScale() {
+    int zeroPoint = Firebase.getInt(ZERO_POINT);
+    float calPoint = Firebase.getFloat(CALIBRATION_POINT);
+    printf("Initializing scales. Zero: %d, Cal: %f\r\n", zeroPoint, calPoint);
+    scale.set_offset(zeroPoint);
+    scale.set_scale(calPoint);
+}
+
 /**
- * Check for signal to tare scales and tare them if signal received.
+ * Check for signal to zero scales and zero them if signal received.
  **/
-void checkTare() {
+void checkZero() {
     
     // Static flag to check reset success.
     static bool success = true;
 
     // If previous reset failed, then try again.
     if (!success) {
-        success = resetTareFlag();
+        success = resetZeroFlag(0);
     }
 
-    // If last reset success, and get is true, then we have another request to tare.
-    if(success && Firebase.getBool(TARE_FLAG)) {
+    // If last reset success, and get is true, then we have another request to zero.
+    if(success && Firebase.getBool(ZERO_FLAG)) {
 
-        // Tare the scales and reset the tare flag.
-        Serial.print("Taring scales... ");
+        // Zero the scales and reset the zero flag.
+        Serial.print("Zeroing scales... ");
+        scale.set_scale();
         scale.tare();
-        Serial.println("complete.");
-        success = resetTareFlag();
+        int zero = scale.read_average();
+        Serial.printf("complete. Zero points: %d, %d, %d\r\n", zero, 0, 0);
+        success = resetZeroFlag(zero);
     }
 }
 
 /**
- * Reset the flag to tare the scales.
+ * Reset the flag to zero the scales.
  **/
-bool resetTareFlag() {
+bool resetZeroFlag(int zero) {
 
-    // Clear the tare flag and get the result of the clear operation.
+    // Clear the zero flag and get the result of the clear operation.
     bool success = false;
-    Firebase.setBool(TARE_FLAG, false);
+    Firebase.setInt(ZERO_POINT, zero);
+    Firebase.setBool(ZERO_FLAG, false);
     success = Firebase.success();
 
     // If clearing fails, then log the error.
     if (!success) {
-        Serial.println("Tare flag reset failed");
+        Serial.println("Zero flag reset failed");
         Serial.println(Firebase.error());
     }
 
@@ -256,3 +282,55 @@ bool resetTareFlag() {
     return success;
 }
 
+/**
+ * Check for signal to calibrate scales and calibrate them if signal received.
+ **/
+void checkCalibrate() {
+    
+    // Static flag to check reset success.
+    static bool success = true;
+
+    // If previous reset failed, then try again.
+    if (!success) {
+        success = resetCalibrateFlag(0);
+    }
+
+    if (!success) { return; }
+
+    // If last reset success, and get is true, then we have another request to calibrate.
+    if(Firebase.getBool(CALIBRATE_FLAG)) {
+
+        // Calibrate the scales and reset the calibrate flag.
+        Serial.print("Calibrating scales... ");
+        float calValue = Firebase.getFloat(CALIBRATION_VALUE);
+        if (calValue <= 0) { calValue = 1; }
+        int raw = scale.get_units(10);
+        float result = raw / calValue;
+        scale.set_scale(result);
+        Serial.printf("Success! Target: %fg, Raw: %d, Result: %f\r\n", calValue, raw, result);
+        success = resetCalibrateFlag(result);
+    }
+}
+
+/**
+ * Reset the flag to calibrate the scales.
+ **/
+bool resetCalibrateFlag(float calibration) {
+
+    // Clear the calibrate flag and get the result of the clear operation.
+    bool success = false;
+    Firebase.setFloat(CALIBRATION_POINT, calibration);
+    Firebase.setBool(CALIBRATE_FLAG, false);
+    success = Firebase.success();
+
+    // If clearing fails, then log the error.
+    if (!success) {
+        Serial.println("Calibration flag reset failed");
+        Serial.println(Firebase.error());
+    }
+
+    // Return the result of the clear operation.
+    return success;
+}
+
+#pragma endregion
