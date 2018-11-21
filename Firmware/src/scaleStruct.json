@@ -1,0 +1,10 @@
+{
+    "calibrateFlag" : false,
+    "calibrationPoint" : 0,
+    "calibrationValue" : 0,
+    "zeroFlag" : false,
+    "zeroPoint" : 0,
+    "currentValue" : 0,
+    "kegName" : "",
+    "lastChanged" : ""
+}

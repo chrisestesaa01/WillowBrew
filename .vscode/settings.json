@@ -1,6 +1,0 @@
-{
-    "terminal.integrated.env.osx": {
-        "PATH": "/Users/chris/.platformio/penv/bin:/Users/chris/.platformio/penv:/usr/local/Cellar/git/2.14.3/libexec/git-core:/Users/chris/Library/Android/sdk/platform-tools:/Users/chris/Library/Android/sdk/tools:/Users/chris/.fastlane/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/chris/Library/Android/sdk//platform-tools/:/Users/chris/Library/Android/sdk//tools/:/Library/Java/JavaVirtualMachines/jdk1.8.0_162.jdk/Contents/Home/bin:/Users/chris/Library/Android/sdk//tools:/Users/chris/Library/Android/sdk//platform-tools:/Users/chris/Library/Android/sdk//tools:/Users/chris/Library/Android/sdk//tools",
-        "PLATFORMIO_CALLER": "vscode"
-    }
-}
