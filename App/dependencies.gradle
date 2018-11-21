@@ -1,0 +1,94 @@
+/**
+ * Master build dependencies and versions file.
+ */
+
+ext.deps = [:]
+
+/**
+ * Dependency versions:
+ */
+def versions = [:]
+
+// Kotlin:
+versions.kotlin = "1.2.61"
+
+// Plugins:
+versions.gradlePlugin = "3.1.3"
+
+// Google services plugin:
+versions.googlePlugin = "4.2.0"
+
+// Support:
+versions.support = "28.0.0"
+versions.constraintLayout = "1.1.3"
+versions.espresso = "3.0.2"
+versions.runner = "1.0.2"
+
+// Firebase:
+versions.firebase = "16.0.5"
+
+// Junit:
+versions.junit = "4.12"
+
+/**
+ * Dependency definitions:
+ */
+
+// Kotlin:
+def kotlin = [:]
+kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+kotlin.lib = "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+
+// Gradle:
+def gradle = [:]
+gradle.plugin = "com.android.tools.build:gradle:$versions.gradlePlugin"
+
+// Google:
+def google = [:]
+google.plugin = "com.google.gms:google-services:$versions.googlePlugin"
+
+// Android support libs:
+def support = [:]
+support.appcompat = "com.android.support:appcompat-v7:$versions.support"
+support.constraintlayout = "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
+support.espresso = "com.android.support.test.espresso:espresso-core:$versions.espresso"
+support.testrunner = "com.android.support.test:runner:$versions.runner"
+
+// Firebase:
+def firebase = [:]
+firebase.core = "com.google.firebase:firebase-core:$versions.firebase"
+firebase.database = "com.google.firebase:firebase-database:$versions.firebase"
+
+// JUnit:
+def junit = [:]
+junit.lib = "junit:junit:$versions.junit"
+
+// Build vars:
+def build = [:]
+
+// SDK versions:
+build.min_sdk = 19
+build.target_sdk = 28
+build.compile_sdk = 28
+build.build_tools = "28.0.2"
+
+// Application versions:
+build.application_group = "com.willowtreeapps.willowbrew"
+build.version_major = 1
+build.version_minor = 0
+build.version_patch = 0
+
+/**
+ * Dependencies:
+ */
+
+// Project dependencies:
+def deps = [:]
+deps.kotlin = kotlin
+deps.gradle = gradle
+deps.google = google
+deps.support = support
+deps.firebase = firebase
+deps.junit = junit
+deps.build = build
+ext.deps = deps

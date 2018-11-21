@@ -1,0 +1,109 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+def getAppBuildNumber = { ->
+    return project.properties.getOrDefault("buildNumber", 0).toInteger()
+}
+
+def getAppVersionCode = { ->
+    def result =
+            (1000000 * deps.build.version_major) +
+            (100000 * deps.build.version_minor) +
+            (10000 * deps.build.version_patch) +
+            getAppBuildNumber()
+
+    logger.lifecycle("### Version code: " + result + "###")
+    return result
+}
+
+def getAppVersionName = { ->
+    def result = "${deps.build.version_major}.${deps.build.version_minor}.${deps.build.version_patch}"
+    logger.lifecycle("### Version name: " + result + "###")
+    return result
+}
+
+android {
+
+    // Compile and build tools versions:
+    compileSdkVersion deps.build.target_sdk
+    buildToolsVersion deps.build.build_tools
+
+    defaultConfig {
+
+        // App id:
+        applicationId deps.build.application_group
+
+        // Min and target sdk:
+        minSdkVersion deps.build.min_sdk
+        targetSdkVersion deps.build.target_sdk
+
+        // Version name and code:
+        versionName getAppVersionName()
+        versionCode getAppVersionCode()
+
+        // Use multidex.
+        multiDexEnabled true
+
+        // Support vector drawables.
+        vectorDrawables.useSupportLibrary = true
+
+        // Test runner.
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+
+
+    buildTypes {
+
+        // Release build:
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        // Debug build:
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            matchingFallbacks = ['release']
+        }
+    }
+
+    // Compile with java 8.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    // Enable databinding.
+    dataBinding.enabled = true
+}
+
+dependencies {
+
+    // Local jars:
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation(
+
+        // Kotlin:
+        deps.kotlin.lib,
+
+        // Support:
+        deps.support.appcompat,
+        deps.support.constraintlayout,
+
+        // Firebase:
+        deps.firebase.core,
+        deps.firebase.database
+    )
+
+    testImplementation deps.junit.lib
+    androidTestImplementation deps.support.testrunner
+    androidTestImplementation deps.support.espresso
+}
+
+apply plugin: 'com.google.gms.google-services'

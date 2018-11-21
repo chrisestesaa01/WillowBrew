@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "736841754701",
+    "firebase_url": "https://kegscale-eafce.firebaseio.com",
+    "project_id": "kegscale-eafce",
+    "storage_bucket": "kegscale-eafce.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736841754701:android:ad3e3f8f24341beb",
+        "android_client_info": {
+          "package_name": "com.willowtreeapps.willowbrew"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736841754701-s8f8obbtidqt9e0u5q7l6iobolm89sib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYcw9vTbJj_9nwClia9e8ltPSAFkZUTzY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
