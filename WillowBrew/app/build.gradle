@@ -9,9 +9,9 @@ def getAppBuildNumber = { ->
 def getAppVersionCode = { ->
     def result =
             (1000000 * deps.build.version_major) +
-            (100000 * deps.build.version_minor) +
-            (10000 * deps.build.version_patch) +
-            getAppBuildNumber()
+                    (100000 * deps.build.version_minor) +
+                    (10000 * deps.build.version_patch) +
+                    getAppBuildNumber()
 
     logger.lifecycle("### Version code: " + result + "###")
     return result
@@ -80,6 +80,15 @@ android {
 
     // Enable databinding.
     dataBinding.enabled = true
+
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res',
+                    'src/main/res_bev_drawables'
+            ]
+        }
+    }
 }
 
 dependencies {
@@ -89,18 +98,23 @@ dependencies {
 
     implementation(
 
-        // Kotlin:
-        deps.kotlin.lib,
+            // Kotlin:
+            deps.kotlin.lib,
 
-        // Support:
-        deps.support.appcompat,
-        deps.support.constraintlayout,
+            // Support:
+            deps.support.appcompat,
+            deps.support.constraintlayout,
 
-        // Firebase:
-        deps.firebase.core,
-        deps.firebase.database
+            // Nav arch:
+            deps.nav.fragment,
+            deps.nav.ui,
+
+            // Firebase:
+            deps.firebase.core,
+            deps.firebase.database
     )
 
+    implementation 'com.android.support:support-v4:28.0.0'
     testImplementation deps.junit.lib
     androidTestImplementation deps.support.testrunner
     androidTestImplementation deps.support.espresso

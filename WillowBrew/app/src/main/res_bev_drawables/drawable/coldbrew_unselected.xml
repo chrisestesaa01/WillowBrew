@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="0" android:drawable="@drawable/bev_coldbrew_0Deselected" />
+    <item android:maxLevel="10" android:drawable="@drawable/bev_coldbrew_10Deselected" />
+    <item android:maxLevel="20" android:drawable="@drawable/bev_coldbrew_20Deselected" />
+    <item android:maxLevel="30" android:drawable="@drawable/bev_coldbrew_30Deselected" />
+    <item android:maxLevel="40" android:drawable="@drawable/bev_coldbrew_40Deselected" />
+    <item android:maxLevel="50" android:drawable="@drawable/bev_coldbrew_50Deselected" />
+    <item android:maxLevel="60" android:drawable="@drawable/bev_coldbrew_60Deselected" />
+    <item android:maxLevel="70" android:drawable="@drawable/bev_coldbrew_70Deselected" />
+    <item android:maxLevel="80" android:drawable="@drawable/bev_coldbrew_80Deselected" />
+    <item android:maxLevel="90" android:drawable="@drawable/bev_coldbrew_90Deselected" />
+    <item android:maxLevel="100" android:drawable="@drawable/bev_coldbrew_100Deselected" />
+</level-list>

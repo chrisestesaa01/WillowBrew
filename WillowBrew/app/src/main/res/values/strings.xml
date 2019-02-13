@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">WillowBrew</string>
+
+    <string name="hello_splash_fragment">Hello splash fragment</string>
+    <string name="hello_home_fragment">Hello home fragment</string>
+    <string name="tablet_string">I am a tablet</string>
+
 </resources>
