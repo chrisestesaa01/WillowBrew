@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <com.willowtreeapps.willowbrew.CarouselLayout
+        android:id="@+id/carousel_item"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/keg_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/beverage_image"
+                app:layout_constraintEnd_toEndOf="@id/beverage_image"
+                app:layout_constraintStart_toStartOf="@id/beverage_image">
+
+                <!-- Keg percentage value: -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/percent_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/dark_blue_grey"
+                    android:textSize="75sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@id/percent_sign"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="100" />
+
+                <!-- Percent sign: -->
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/percent_sign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/percent_sign"
+                    android:textColor="@color/dark_blue_grey"
+                    android:textSize="35sp"
+                    app:layout_constraintBottom_toBottomOf="@id/percent_value"
+                    app:layout_constraintStart_toEndOf="@id/percent_value"
+                    app:layout_constraintTop_toTopOf="@id/percent_value"
+                    tools:text="%" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <!-- Beverage image: -->
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/beverage_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/bev_beer_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/keg_percent"
+                tools:src="@drawable/beer_selected" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </com.willowtreeapps.willowbrew.CarouselLayout>
+
+</layout>
