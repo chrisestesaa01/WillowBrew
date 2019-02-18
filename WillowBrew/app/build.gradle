@@ -7,11 +7,10 @@ def getAppBuildNumber = { ->
 }
 
 def getAppVersionCode = { ->
-    def result =
-            (1000000 * deps.build.version_major) +
-                    (100000 * deps.build.version_minor) +
-                    (10000 * deps.build.version_patch) +
-                    getAppBuildNumber()
+    def maj = (1000000 * deps.build.version_major)
+    def min = (100000 * deps.build.version_minor)
+    def patch = (10000 * deps.build.version_patch)
+    def result = maj + min + patch + getAppBuildNumber()
 
     logger.lifecycle("### Version code: " + result + "###")
     return result
@@ -85,6 +84,8 @@ android {
         main {
             res.srcDirs = [
                     'src/main/res',
+                    'src/main/res_main',
+                    'src/main/res_launcher',
                     'src/main/res_bev_drawables'
             ]
         }

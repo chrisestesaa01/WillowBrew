@@ -5,6 +5,9 @@ import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+
+import android.support.v4.view.ViewPager
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,13 +45,65 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        activity?.let {
-            binding = DataBindingUtil.setContentView(it, R.layout.fragment_home)
-        }
+
+
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+
+        val sfm = activity?.supportFragmentManager
+
+        sfm?.let {
+            this.context?.let { c ->
+            val pagerAdapter = BeveragePagerAdapter(c, it)
+            initPager(pagerAdapter)
+        }}
+
+        val pageDots = binding?.pageDots
+        pageDots?.setupWithViewPager(binding?.bevPager, true)
+
 
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_home, container, false)
         return binding?.root
+    }
+
+
+    private val listener = object : ViewPager.OnPageChangeListener {
+
+        private var jp: Int = -1
+
+        override fun onPageScrollStateChanged(p0: Int) {
+            if (ViewPager.SCROLL_STATE_IDLE == p0 && jp >= 0) {
+                binding?.bevPager?.setCurrentItem(jp, false)
+                jp = -1
+            }
+        }
+
+        override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
+        }
+
+        override fun onPageSelected(p0: Int) {
+            when (p0) {
+                0 -> jp = 10
+                10 -> jp = 1
+                else -> {}
+            }
+        }
+
+    }
+
+    private fun initPager(pagerAdapter: BeveragePagerAdapter) {
+
+        val pager = binding?.bevPager ?: return
+        pager.adapter = pagerAdapter
+
+
+pager.setPageTransformer(false, pagerAdapter)
+
+        pager.currentItem = 0
+        pager.offscreenPageLimit = 3
+        pager.clipToPadding = false
+        pager.pageMargin = -700
+
     }
 
 
