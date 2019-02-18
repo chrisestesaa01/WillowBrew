@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:maxLevel="0" android:drawable="@drawable/bev_kombucha_0unselected" />
+    <item android:maxLevel="10" android:drawable="@drawable/bev_kombucha_10unselected" />
+    <item android:maxLevel="20" android:drawable="@drawable/bev_kombucha_20unselected" />
+    <item android:maxLevel="30" android:drawable="@drawable/bev_kombucha_30unselected" />
+    <item android:maxLevel="40" android:drawable="@drawable/bev_kombucha_40unselected" />
+    <item android:maxLevel="50" android:drawable="@drawable/bev_kombucha_50unselected" />
+    <item android:maxLevel="60" android:drawable="@drawable/bev_kombucha_60unselected" />
+    <item android:maxLevel="70" android:drawable="@drawable/bev_kombucha_70unselected" />
+    <item android:maxLevel="80" android:drawable="@drawable/bev_kombucha_80unselected" />
+    <item android:maxLevel="90" android:drawable="@drawable/bev_kombucha_90unselected" />
+    <item android:maxLevel="100" android:drawable="@drawable/bev_kombucha_100unselected" />
+</level-list>
