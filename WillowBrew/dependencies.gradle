@@ -24,6 +24,9 @@ versions.constraintLayout = "1.1.3"
 versions.espresso = "3.0.2"
 versions.runner = "1.0.2"
 
+// Nav arch:
+versions.navArch = "1.0.0-beta01"
+
 // Firebase:
 versions.firebase = "16.0.5"
 
@@ -53,6 +56,11 @@ support.appcompat = "com.android.support:appcompat-v7:$versions.support"
 support.constraintlayout = "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
 support.espresso = "com.android.support.test.espresso:espresso-core:$versions.espresso"
 support.testrunner = "com.android.support.test:runner:$versions.runner"
+
+// Nav arch:
+def nav = [:]
+nav.fragment = "android.arch.navigation:navigation-fragment-ktx:$versions.navArch"
+nav.ui = "android.arch.navigation:navigation-ui-ktx:$versions.navArch"
 
 // Firebase:
 def firebase = [:]
@@ -88,6 +96,7 @@ deps.kotlin = kotlin
 deps.gradle = gradle
 deps.google = google
 deps.support = support
+deps.nav = nav
 deps.firebase = firebase
 deps.junit = junit
 deps.build = build
