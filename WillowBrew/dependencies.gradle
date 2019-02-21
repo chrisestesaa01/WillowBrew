@@ -10,10 +10,13 @@ ext.deps = [:]
 def versions = [:]
 
 // Kotlin:
-versions.kotlin = "1.2.61"
+versions.kotlin = "1.3.21"
 
-// Plugins:
-versions.gradlePlugin = '3.2.1'
+// Gradle plugin:
+versions.gradlePlugin = "3.3.1"
+
+// Dependency update plugin:
+versions.dependencyUpdatePlugin = "0.20.0"
 
 // Google services plugin:
 versions.googlePlugin = "4.2.0"
@@ -24,14 +27,24 @@ versions.constraintLayout = "1.1.3"
 versions.espresso = "3.0.2"
 versions.runner = "1.0.2"
 
+// Architecture components:
+versions.archComponents = "1.1.1"
+
+// Dagger:
+versions.dagger = "2.21"
+
 // Nav arch:
-versions.navArch = "1.0.0-beta01"
+versions.navArch = "1.0.0-beta02"
 
 // Firebase:
-versions.firebase = "16.0.5"
+versions.firebaseDatabase = "16.0.6"
+versions.firebaseCore = "16.0.7"
 
 // Junit:
 versions.junit = "4.12"
+
+// Multidex.
+versions.multiDex = "1.0.3"
 
 /**
  * Dependency definitions:
@@ -39,23 +52,34 @@ versions.junit = "4.12"
 
 // Kotlin:
 def kotlin = [:]
-kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
 kotlin.lib = "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
 
-// Gradle:
-def gradle = [:]
-gradle.plugin = "com.android.tools.build:gradle:$versions.gradlePlugin"
-
-// Google:
-def google = [:]
-google.plugin = "com.google.gms:google-services:$versions.googlePlugin"
+// Plugins:
+def plugins = [:]
+plugins.dependencyUpdate = "com.github.ben-manes:gradle-versions-plugin:$versions.dependencyUpdatePlugin"
+plugins.kotlin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+plugins.gradle = "com.android.tools.build:gradle:$versions.gradlePlugin"
+plugins.google = "com.google.gms:google-services:$versions.googlePlugin"
 
 // Android support libs:
 def support = [:]
+support.v4 = "com.android.support:support-v4:$versions.support"
 support.appcompat = "com.android.support:appcompat-v7:$versions.support"
 support.constraintlayout = "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
 support.espresso = "com.android.support.test.espresso:espresso-core:$versions.espresso"
 support.testrunner = "com.android.support.test:runner:$versions.runner"
+support.multidex = "com.android.support:multidex:$versions.multiDex"
+
+// Android lifecycle components:
+def lifecycle = [:]
+lifecycle.extensions = "android.arch.lifecycle:extensions:$versions.archComponents"
+lifecycle.common = "android.arch.lifecycle:common-java8:$versions.archComponents"
+lifecycle.testing = "android.arch.core:core-testing:$versions.archComponents"
+
+// Dagger:
+def dagger = [:]
+dagger.lib = "com.google.dagger:dagger:$versions.dagger"
+dagger.compiler = "com.google.dagger:dagger-compiler:$versions.dagger"
 
 // Nav arch:
 def nav = [:]
@@ -64,8 +88,8 @@ nav.ui = "android.arch.navigation:navigation-ui-ktx:$versions.navArch"
 
 // Firebase:
 def firebase = [:]
-firebase.core = "com.google.firebase:firebase-core:$versions.firebase"
-firebase.database = "com.google.firebase:firebase-database:$versions.firebase"
+firebase.core = "com.google.firebase:firebase-core:$versions.firebaseCore"
+firebase.database = "com.google.firebase:firebase-database:$versions.firebaseDatabase"
 
 // JUnit:
 def junit = [:]
@@ -93,9 +117,10 @@ build.version_patch = 0
 // Project dependencies:
 def deps = [:]
 deps.kotlin = kotlin
-deps.gradle = gradle
-deps.google = google
+deps.plugins = plugins
 deps.support = support
+deps.lifecycle = lifecycle
+deps.dagger = dagger
 deps.nav = nav
 deps.firebase = firebase
 deps.junit = junit

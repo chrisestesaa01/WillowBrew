@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<layout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" >
 
     <com.willowtreeapps.willowbrew.CarouselLayout
         android:id="@+id/carousel_item"
         android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:orientation="vertical">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+        android:background="@android:color/transparent">
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/keg_percent"
@@ -63,9 +54,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/keg_percent"
                 tools:src="@drawable/beer_selected" />
-
-        </android.support.constraint.ConstraintLayout>
-
 
     </com.willowtreeapps.willowbrew.CarouselLayout>
 

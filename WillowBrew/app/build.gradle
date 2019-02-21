@@ -1,6 +1,7 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+apply plugin: "com.android.application"
+apply plugin: "kotlin-android"
+apply plugin: "kotlin-android-extensions"
+apply plugin: "kotlin-kapt"
 
 def getAppBuildNumber = { ->
     return project.properties.getOrDefault("buildNumber", 0).toInteger()
@@ -17,7 +18,11 @@ def getAppVersionCode = { ->
 }
 
 def getAppVersionName = { ->
-    def result = "${deps.build.version_major}.${deps.build.version_minor}.${deps.build.version_patch}"
+    def maj = "${deps.build.version_major}"
+    def min = "${deps.build.version_minor}"
+    def patch = "${deps.build.version_patch}"
+    def result = maj + "." + min + "." + patch
+
     logger.lifecycle("### Version name: " + result + "###")
     return result
 }
@@ -50,8 +55,6 @@ android {
         // Test runner.
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-
-
 
     buildTypes {
 
@@ -97,14 +100,28 @@ dependencies {
     // Local jars:
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
+    // Dagger:
+    kapt deps.dagger.compiler
+    kaptTest deps.dagger.compiler
+
+    // App dependencies:
     implementation(
 
             // Kotlin:
             deps.kotlin.lib,
 
             // Support:
+            deps.support.v4,
             deps.support.appcompat,
             deps.support.constraintlayout,
+            deps.support.multidex,
+
+            // Architecture components:
+            deps.lifecycle.extensions,
+            deps.lifecycle.common,
+
+            // Dagger:
+            deps.dagger.lib,
 
             // Nav arch:
             deps.nav.fragment,
@@ -115,10 +132,12 @@ dependencies {
             deps.firebase.database
     )
 
-    implementation 'com.android.support:support-v4:28.0.0'
+    // Test dependencies:
     testImplementation deps.junit.lib
-    androidTestImplementation deps.support.testrunner
-    androidTestImplementation deps.support.espresso
+    androidTestImplementation(
+            deps.support.testrunner,
+            deps.support.espresso
+    )
 }
 
 apply plugin: 'com.google.gms.google-services'

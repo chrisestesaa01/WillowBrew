@@ -1,19 +1,19 @@
 package com.willowtreeapps.willowbrew
 
-import android.app.Activity
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.willowtreeapps.willowbrew.databinding.FragmentHomeBinding
+import com.willowtreeapps.willowbrew.di.injectViewModel
 
 class BeveragePageFragement : Fragment() {
 
-    private var binding: com.willowtreeapps.willowbrew.databinding.BevPageFragmentBinding? = null
+    private var binding: com.willowtreeapps.willowbrew.databinding.FragmentBevPageBinding? = null
+
+    private val viewModel by injectViewModel { BeveragePageViewModel() }
 
     companion object {
         fun newFragment(context: Context, position: Int, scale: Float): Fragment {
@@ -32,7 +32,7 @@ class BeveragePageFragement : Fragment() {
 
         if (container == null) return null
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.bev_page_fragment, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bev_page, container, false)
 
         val scale = this.getArguments()?.getFloat("scale") ?: 0f
 

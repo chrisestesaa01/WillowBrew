@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:id="@+id/baselayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal|top">
 
         <include
-
             android:id="@+id/item_include"
-            layout="@layout/bev_holder_image" />
+            layout="@layout/bev_glass_layout" />
+
     </LinearLayout>
+
 </layout>

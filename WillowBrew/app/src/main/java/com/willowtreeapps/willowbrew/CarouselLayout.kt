@@ -2,12 +2,13 @@ package com.willowtreeapps.willowbrew
 
 import android.content.Context
 import android.graphics.Canvas
+import android.support.constraint.ConstraintLayout
 import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.willowtreeapps.willowbrew.BeveragePagerAdapter.Companion.BIG_SCALE
 
 
-class CarouselLayout : LinearLayout {
+class CarouselLayout : ConstraintLayout {
     private var mScale = BIG_SCALE
 
 

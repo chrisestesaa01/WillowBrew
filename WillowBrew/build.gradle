@@ -1,3 +1,5 @@
+apply plugin: "com.github.ben-manes.versions"
+
 buildscript {
 
     apply from: 'dependencies.gradle'
@@ -7,9 +9,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath deps.gradle.plugin
-        classpath deps.kotlin.plugin
-        classpath deps.google.plugin
+        classpath deps.plugins.gradle
+        classpath deps.plugins.kotlin
+        classpath deps.plugins.google
+        classpath deps.plugins.dependencyUpdate
     }
 }
 
@@ -22,4 +25,21 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+// Run dependency check before lint.
+task lint(dependsOn : dependencyUpdates)
+
+// Don't count alpha, beta, rc, etc. releases when checking for dependency updates.
+dependencyUpdates.resolutionStrategy {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', 'cr', 'm', 'preview'].any { qualifier ->
+                selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
 }
