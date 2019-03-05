@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="bev_card_width">328dp</dimen>
+    <dimen name="bev_card_height">208dp</dimen>
+
+</resources>

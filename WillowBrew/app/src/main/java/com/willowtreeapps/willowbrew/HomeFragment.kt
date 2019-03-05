@@ -1,5 +1,6 @@
 package com.willowtreeapps.willowbrew
 
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.net.Uri
@@ -7,11 +8,14 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 
 import android.support.v4.view.ViewPager
+import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.willowtreeapps.willowbrew.databinding.FragmentHomeBinding
+import com.willowtreeapps.willowbrew.di.injectViewModel
+import java.util.concurrent.atomic.AtomicReference
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,6 +47,10 @@ class HomeFragment : Fragment() {
 
     private var binding: FragmentHomeBinding? = null
 
+
+    private val viewModel by injectViewModel { BeveragePageViewModel() }
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -54,12 +62,19 @@ class HomeFragment : Fragment() {
         sfm?.let {
             this.context?.let { c ->
             val pagerAdapter = BeveragePagerAdapter(c, it)
-            initPager(pagerAdapter)
-        }}
+                val cardAdapter = BeverageCardPagerAdapter(c, it);
+            initPager(pagerAdapter, cardAdapter)
+
+                viewModel.getBevs().observe(this, Observer { bevs ->
+                    if (bevs == null) return@Observer
+                    //pagerAdapter.setItems(bevs)
+
+                })
+
+            }}
 
         val pageDots = binding?.pageDots
         pageDots?.setupWithViewPager(binding?.bevPager, true)
-
 
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_home, container, false)
@@ -91,13 +106,26 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun initPager(pagerAdapter: BeveragePagerAdapter) {
-
+    private fun initPager(pagerAdapter: BeveragePagerAdapter, cardAdapter: BeverageCardPagerAdapter) {
         val pager = binding?.bevPager ?: return
         pager.adapter = pagerAdapter
 
+        val foo = binding?.cardPager ?: return
+        foo.adapter = cardAdapter
 
-pager.setPageTransformer(false, pagerAdapter)
+        SyncPager(pager, foo, 1.5f)
+        SyncPager(foo, pager, 0.5f)
+
+
+//        val masterRef = AtomicReference<ViewPager>()
+//
+//        pager.addOnPageChangeListener(ParallaxOnPageChangeListener(pager, foo, masterRef))
+//        foo.addOnPageChangeListener(ParallaxOnPageChangeListener(foo, pager, masterRef))
+//
+
+
+
+        pager.setPageTransformer(false, pagerAdapter)
 
         pager.currentItem = 0
         pager.offscreenPageLimit = 3
@@ -126,4 +154,145 @@ pager.setPageTransformer(false, pagerAdapter)
                     }
                 }
     }
+}
+
+class SyncPager(
+        private val primary: ViewPager,
+        private val secondary: ViewPager,
+        private var dragMultiplier: Float = 1.0f
+) : ViewPager.OnPageChangeListener
+{
+
+    init {
+
+        primary.addOnPageChangeListener(this)
+    }
+
+    private fun getmult(): Float {
+
+        val pw = primary.width + primary.pageMargin
+        val sw = secondary.width + secondary.pageMargin
+        return sw.toFloat() / pw
+    }
+
+    var lastPosition = 1
+    var lastOffset = 0
+
+    override fun onPageScrollStateChanged(state: Int) {
+        if (primary.isFakeDragging) return
+        if (state == ViewPager.SCROLL_STATE_DRAGGING) {
+            secondary.beginFakeDrag()
+        } else if (state == ViewPager.SCROLL_STATE_IDLE) {
+            lastPosition = primary.currentItem
+            lastOffset = 0
+            if (secondary.isFakeDragging) {
+                secondary.endFakeDrag()
+                secondary.setCurrentItem(primary.currentItem)
+            }
+        }
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        if (primary.isFakeDragging) return
+        if (secondary.isFakeDragging) {
+
+            log("GIVEN: position: $position positionOffsetPixels: $positionOffsetPixels positionOffset: $positionOffset")
+            log("LAST:  position: $lastPosition positionOffsetPixels: $lastOffset")
+
+            val width = primary.measuredWidth + primary.pageMargin
+
+
+            var deltaPix = lastOffset - positionOffsetPixels
+
+
+            if (lastPosition != position) {
+                val abs = if (deltaPix < 0) {
+                    deltaPix * -1
+                } else {
+                    deltaPix
+                }
+
+                deltaPix = width - abs
+                if (position == (lastPosition - 1)) {
+                    secondary.setCurrentItem(position + 1, false)
+                } else {
+                    secondary.setCurrentItem(position, false)
+                }
+                    lastPosition = position
+
+            }
+
+
+
+            log("Delta pix: $deltaPix")
+
+            lastOffset = positionOffsetPixels
+
+            val drag = (deltaPix * getmult())
+
+
+            log("Delta: $deltaPix DRAG: $drag")
+//            Log.d("DRAG", "\r\ndrag: $drag position: $position offset: $offset pixels: $pixels \r\ndeltapos: $deltaPos")
+            secondary.fakeDragBy(drag)
+        }
+    }
+
+    override fun onPageSelected(position: Int) {
+        if (primary.isFakeDragging) return
+        if (!secondary.isFakeDragging) {
+            secondary.currentItem = position
+        }
+    }
+
+    private fun log(msg: String) {
+        Log.d("SYNC", msg)
+    }
+}
+
+
+private class ParallaxOnPageChangeListener(
+        /**
+         * the viewpager that is being scrolled
+         */
+        private val viewPager: ViewPager,
+        /**
+         * the viewpager that should be synced
+         */
+        private val viewPager2: ViewPager, private val masterRef: AtomicReference<ViewPager>) : ViewPager.OnPageChangeListener {
+    private var lastRemainder: Float = 0.toFloat()
+    private var mLastPos = -1
+
+    override fun onPageScrollStateChanged(state: Int) {
+        val currentMaster = masterRef.get()
+        if (currentMaster === viewPager2)
+            return
+        when (state) {
+            ViewPager.SCROLL_STATE_DRAGGING -> if (currentMaster == null)
+                masterRef.set(viewPager)
+            ViewPager.SCROLL_STATE_SETTLING -> if (mLastPos != viewPager2.currentItem)
+                viewPager2.setCurrentItem(viewPager.currentItem, false)
+            ViewPager.SCROLL_STATE_IDLE -> {
+                masterRef.set(null)
+                viewPager2.setCurrentItem(viewPager.currentItem, false)
+                mLastPos = -1
+            }
+        }
+    }
+
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        if (masterRef.get() === viewPager2)
+            return
+        if (mLastPos == -1)
+            mLastPos = position
+        val diffFactor = viewPager2.width.toFloat() / this.viewPager.width
+        val scrollTo = this.viewPager.scrollX * diffFactor + lastRemainder
+        val scrollToInt = if (scrollTo < 0) Math.ceil(scrollTo.toDouble()).toInt() else Math.floor(scrollTo.toDouble()).toInt()
+        lastRemainder = scrollToInt - scrollTo
+        if (mLastPos != viewPager.currentItem)
+            viewPager2.setCurrentItem(viewPager.currentItem, false)
+        viewPager2.scrollTo(scrollToInt, 0)
+
+    }
+
+    override fun onPageSelected(position: Int) {}
 }

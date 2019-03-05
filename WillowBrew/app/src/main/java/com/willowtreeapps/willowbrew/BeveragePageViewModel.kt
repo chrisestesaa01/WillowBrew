@@ -1,8 +1,13 @@
 package com.willowtreeapps.willowbrew
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import javax.inject.Inject
 
-class BeveragePageViewModel : ViewModel() {
+class BeveragePageViewModel @Inject constructor (
+        private val controller: BeverageController
+) : ViewModel() {
 
 
 
@@ -19,7 +24,8 @@ class BeveragePageViewModel : ViewModel() {
 
     }
 
-    private val beverages: List<BeverageModel> = emptyList()
 
-    fun getBev(position: Int):
+
+    fun getBevs() = controller.bevs
+
 }

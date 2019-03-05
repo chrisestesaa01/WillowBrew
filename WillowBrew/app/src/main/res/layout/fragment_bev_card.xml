@@ -8,8 +8,8 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/item_include"
-            layout="@layout/bev_glass_layout" />
+            android:id="@+id/card_include"
+            layout="@layout/bev_card_layout" />
 
     </LinearLayout>
 

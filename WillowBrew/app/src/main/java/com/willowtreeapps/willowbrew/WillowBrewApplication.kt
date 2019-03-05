@@ -1,6 +1,7 @@
 package com.willowtreeapps.willowbrew
 
 import android.app.Application
+import com.willowtreeapps.willowbrew.di.DaggerWillowBrewComponent
 import com.willowtreeapps.willowbrew.di.WillowBrewComponent
 
 class WillowBrewApplication : Application() {
@@ -12,7 +13,10 @@ class WillowBrewApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-       // willowBrewComponent = DaggerWillowBrewComponent
+        willowBrewComponent = DaggerWillowBrewComponent
+                .builder()
+                .build()
+
 
     }
 }

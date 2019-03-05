@@ -16,7 +16,7 @@ class BeveragePagerAdapter(
         fragmentManager: FragmentManager
 ) : FragmentStatePagerAdapter(fragmentManager), ViewPager.PageTransformer {
 
-    private val items: MutableList<BeveragePageModel> = mutableListOf()
+    private val items: MutableList<BeveragePageViewModel.BeverageModel> = mutableListOf()
 
     companion object {
         const val BIG_SCALE = 1.0f
@@ -28,7 +28,7 @@ class BeveragePagerAdapter(
     private var scale: Float = 0.0f
 
     override fun getCount(): Int {
-        return items.size
+        return 10
     }
 
     override fun getItem(p0: Int): Fragment {
@@ -58,6 +58,14 @@ class BeveragePagerAdapter(
         }
         myLinearLayout?.setScaleBoth(scale)
         myLinearLayout?.alpha = alpha
+    }
+
+
+
+    fun setItems(items: List<BeveragePageViewModel.BeverageModel>) {
+        this.items.clear()
+        this.items.addAll(items)
+        notifyDataSetChanged()
     }
 
 }

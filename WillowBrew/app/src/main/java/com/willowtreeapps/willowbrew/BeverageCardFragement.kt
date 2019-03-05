@@ -12,18 +12,17 @@ import android.view.ViewGroup
 import com.willowtreeapps.willowbrew.BeveragePageViewModel.BeverageModel.Type.*
 import com.willowtreeapps.willowbrew.di.injectViewModel
 
-class BeveragePageFragement : Fragment() {
+class BeverageCardFragement : Fragment() {
 
-    private var binding: com.willowtreeapps.willowbrew.databinding.FragmentBevPageBinding? = null
+    private var binding: com.willowtreeapps.willowbrew.databinding.FragmentBevCardBinding? = null
 
     private val viewModel by injectViewModel { BeveragePageViewModel() }
 
     companion object {
-        fun newFragment(context: Context, position: Int, scale: Float): Fragment {
+        fun newFragment(context: Context, position: Int): Fragment {
             val bundle = Bundle()
             bundle.putInt("pos", position)
-            bundle.putFloat("scale", scale)
-            return Fragment.instantiate(context, BeveragePageFragement::class.java.name, bundle)
+            return Fragment.instantiate(context, BeverageCardFragement::class.java.name, bundle)
         }
     }
 
@@ -35,9 +34,9 @@ class BeveragePageFragement : Fragment() {
 
         if (container == null) return null
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bev_page, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bev_card, container, false)
 
-        val scale = this.getArguments()?.getFloat("scale") ?: 0f
+
         val pos = this.arguments?.getInt("pos") ?: 0
 
 
@@ -53,11 +52,9 @@ class BeveragePageFragement : Fragment() {
                 val dribbl2 = ContextCompat.getDrawable(it, dribbl)
                 //binding?.itemInclude?.beverageImage?.setImageDrawable(dribbl2)
             }
-            binding?.itemInclude?.percentValue?.text = "$pos"
+
+            binding?.cardInclude?.bevName?.text = "$pos"
         })
-
-        binding?.itemInclude?.carouselItem?.setScaleBoth(scale)
-
 
         return binding?.root
     }
