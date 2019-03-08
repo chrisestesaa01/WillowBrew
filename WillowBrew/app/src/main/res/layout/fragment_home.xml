@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:text="@string/hello_home_fragment" />
 
-        <android.support.v4.view.ViewPager
+        <com.willowtreeapps.willowbrew.SyncPager
         android:id="@+id/bev_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@id/bev_pager"
             app:layout_constraintBottom_toTopOf="@id/card_pager"/>
 
-        <android.support.v4.view.ViewPager
+        <com.willowtreeapps.willowbrew.SyncPager
             android:id="@+id/card_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"

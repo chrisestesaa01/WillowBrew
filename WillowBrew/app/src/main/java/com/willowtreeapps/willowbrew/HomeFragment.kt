@@ -113,9 +113,11 @@ class HomeFragment : Fragment() {
         val foo = binding?.cardPager ?: return
         foo.adapter = cardAdapter
 
-        SyncPager(pager, foo, 1.5f)
-        SyncPager(foo, pager, 0.5f)
+        SyncPager2(pager, foo, 1.5f)
+        SyncPager2(foo, pager, 0.5f)
 
+//        pager.setPagerToSync(foo)
+//        foo.setPagerToSync(pager)
 
 //        val masterRef = AtomicReference<ViewPager>()
 //
@@ -156,7 +158,7 @@ class HomeFragment : Fragment() {
     }
 }
 
-class SyncPager(
+class SyncPager2(
         private val primary: ViewPager,
         private val secondary: ViewPager,
         private var dragMultiplier: Float = 1.0f
@@ -175,73 +177,142 @@ class SyncPager(
         return sw.toFloat() / pw
     }
 
-    var lastPosition = 1
+    var lastPosition = 0
     var lastOffset = 0
+    var scrollStartPosition = 0
 
     override fun onPageScrollStateChanged(state: Int) {
         if (primary.isFakeDragging) return
-        if (state == ViewPager.SCROLL_STATE_DRAGGING) {
-            secondary.beginFakeDrag()
-        } else if (state == ViewPager.SCROLL_STATE_IDLE) {
-            lastPosition = primary.currentItem
-            lastOffset = 0
-            if (secondary.isFakeDragging) {
-                secondary.endFakeDrag()
-                secondary.setCurrentItem(primary.currentItem)
+        when (state) {
+
+            ViewPager.SCROLL_STATE_DRAGGING -> {
+                secondary.beginFakeDrag()
+            }
+            ViewPager.SCROLL_STATE_SETTLING,
+                ViewPager.SCROLL_STATE_IDLE -> {
+                //scrollStartPosition = primary.currentItem
+                lastOffset = 0
+                lastPosition = primary.currentItem
+                lastTotalPos = (lastPosition * (primary.width + primary.pageMargin))
+                if (secondary.isFakeDragging) {
+                    secondary.endFakeDrag()
+                    secondary.setCurrentItem(primary.currentItem, true)
+                    lastOffset = 0
+                }
             }
         }
     }
+
+    var lastTotalPos = 0
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
         if (primary.isFakeDragging) return
         if (secondary.isFakeDragging) {
 
-            log("GIVEN: position: $position positionOffsetPixels: $positionOffsetPixels positionOffset: $positionOffset")
-            log("LAST:  position: $lastPosition positionOffsetPixels: $lastOffset")
+            val width = (primary.width + primary.pageMargin)
+            var logStr = ("width: $width lastPos: $lastPosition pos: $position pix: $positionOffsetPixels")
 
-            val width = primary.measuredWidth + primary.pageMargin
+            // Get total pixel offset from beginning of list.
+            val totalPos = positionOffsetPixels + (position * width)
+
+            // If total position is greater than last time, we are scrolling to the left.
+            val scrollingLeft = (totalPos > lastTotalPos)
+            lastTotalPos = totalPos
 
 
-            var deltaPix = lastOffset - positionOffsetPixels
 
+
+            logStr += " totalPos: $totalPos"
+
+
+            var absOffset = positionOffsetPixels
 
             if (lastPosition != position) {
-                val abs = if (deltaPix < 0) {
-                    deltaPix * -1
-                } else {
-                    deltaPix
+
+
+                var secondaryItem = totalPos / width
+                if (!scrollingLeft) {
+                    secondaryItem += 1
                 }
 
-                deltaPix = width - abs
-                if (position == (lastPosition - 1)) {
-                    secondary.setCurrentItem(position + 1, false)
-                } else {
-                    secondary.setCurrentItem(position, false)
-                }
-                    lastPosition = position
+
+                logStr += " sec item: $secondaryItem"
+
+                    secondary.setCurrentItem(secondaryItem, false)
+
+
+                absOffset += (position - lastPosition) * (primary.width + primary.pageMargin)
+
+                lastPosition = position
+
+//                if (absOffset < position) {
+//                    secondary.setCurrentItem(position + 1, false)
+//                    lastPosition = position + 1
+//////                } else if ((position == (lastPosition + 1))) {
+//////
+//////                    secondary.setCurrentItem(position - 1, false)
+//////                    lastPosition = position - 1
+////                } else {
+////                    secondary.setCurrentItem(position + 1, false)
+//                } else {
+//                    secondary.setCurrentItem(position, false)
+//                    lastPosition = position
+//                }
 
             }
 
-
-
-            log("Delta pix: $deltaPix")
-
+            secondary.fakeDragBy((lastOffset - absOffset.toFloat()) * getmult())
             lastOffset = positionOffsetPixels
 
-            val drag = (deltaPix * getmult())
+            log(logStr)
 
-
-            log("Delta: $deltaPix DRAG: $drag")
-//            Log.d("DRAG", "\r\ndrag: $drag position: $position offset: $offset pixels: $pixels \r\ndeltapos: $deltaPos")
-            secondary.fakeDragBy(drag)
+//            log("GIVEN: position: $position positionOffsetPixels: $positionOffsetPixels positionOffset: $positionOffset")
+//            log("LAST:  position: $lastPosition positionOffsetPixels: $lastOffset")
+//
+//            val width = primary.measuredWidth + primary.pageMargin
+//
+//
+//            var deltaPix = lastOffset - positionOffsetPixels
+//
+//
+//            if (lastPosition != position) {
+//                val abs = if (deltaPix < 0) {
+//                    deltaPix * -1
+//                } else {
+//                    deltaPix
+//                }
+//
+//                deltaPix = width - abs
+//                if (position == (lastPosition - 1)) {
+//                    secondary.setCurrentItem(position + 1, false)
+//                } else {
+//                    secondary.setCurrentItem(position, false)
+//                }
+//                    lastPosition = position
+//
+//            }
+//
+//
+//
+//            log("Delta pix: $deltaPix")
+//
+//            lastOffset = positionOffsetPixels
+//
+//            val drag = (deltaPix * getmult())
+//
+//
+//            log("Delta: $deltaPix DRAG: $drag")
+////            Log.d("DRAG", "\r\ndrag: $drag position: $position offset: $offset pixels: $pixels \r\ndeltapos: $deltaPos")
+//            secondary.fakeDragBy(drag)
         }
     }
 
     override fun onPageSelected(position: Int) {
-        if (primary.isFakeDragging) return
-        if (!secondary.isFakeDragging) {
-            secondary.currentItem = position
-        }
+//        if (primary.isFakeDragging) return
+//        if (!secondary.isFakeDragging) {
+//            secondary.currentItem = position
+//        }
+        lastPosition = position
     }
 
     private fun log(msg: String) {
