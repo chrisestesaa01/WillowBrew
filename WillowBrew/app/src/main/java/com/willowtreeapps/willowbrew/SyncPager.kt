@@ -1,69 +1,130 @@
-package com.willowtreeapps.willowbrew
-
-import android.content.Context
 import android.support.v4.view.ViewPager
-import android.util.AttributeSet
-import android.view.MotionEvent
+import android.util.Log
+import kotlin.math.abs
 
-class SyncPager : ViewPager {
+/**
+ * A class to synchronize scrolling between two viewpagers.
+ */
+class SyncPager(
+        private val primary: ViewPager,
+        private val secondary: ViewPager
+) : ViewPager.OnPageChangeListener {
 
-    private var pagerToSync: SyncPager? = null
+    companion object {
 
-    private var forSuper = false
-
-    constructor(context: Context): super(context)
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs)
-
-    override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
-        if (!forSuper) {
-            pagerToSync?.forSuper = true
-            pagerToSync?.onInterceptTouchEvent(ev)
-            pagerToSync?.forSuper = false
+        /**
+         * Synchronize two viewpagers.
+         */
+        fun synchronizePagers(pager1: ViewPager, pager2: ViewPager) {
+            SyncPager(pager1, pager2)
+            SyncPager(pager2, pager1)
         }
-        return super.onInterceptTouchEvent(ev)
     }
 
-    override fun onTouchEvent(ev: MotionEvent?): Boolean {
-        if (!forSuper) {
-            pagerToSync?.forSuper = true
+    init {
 
-            val ev2 = MotionEvent.obtain(ev)
-            val w1 = this.width + this.pageMargin
-            val w2 = pagerToSync?.let { it.width + it.pageMargin } ?: 0
-            val foo: Float = (pagerToSync?.x ?: 0f)
+        // Add this as a page change listener to the primary.
+        primary.addOnPageChangeListener(this)
+    }
 
-            ev2.setLocation( foo + ev2.x * w2 / w1, ev2.y)
-            pagerToSync?.onTouchEvent(ev2)
-            ev2.recycle()
-            pagerToSync?.forSuper = false
+    // Vars to hold values from one call to 'onPageScroled' to the next.
+    var lastPagePosition = 0
+    var lastScrollOffset = 0
+    var lastAbsolutePosition = 0
+
+    override fun onPageScrollStateChanged(state: Int) {
+        if (primary.isFakeDragging) return
+        when (state) {
+
+            // If primary starts dragging, then start fake drag on secondary.
+            ViewPager.SCROLL_STATE_DRAGGING -> secondary.beginFakeDrag()
+
+            // If primary stops dragging...
+            ViewPager.SCROLL_STATE_SETTLING,
+            ViewPager.SCROLL_STATE_IDLE -> {
+
+                // Reset scroll offset and set last page.
+                lastScrollOffset = 0
+                lastPagePosition = primary.currentItem
+
+                // Set absolute position to page position * page width.
+                lastAbsolutePosition = (lastPagePosition * getPageWidth(primary))
+
+                // If secondary was fake dragging...
+                if (secondary.isFakeDragging) {
+
+                    // End drag and set current item.
+                    secondary.endFakeDrag()
+                    secondary.setCurrentItem(primary.currentItem, true)
+                }
+            }
         }
-        return super.onTouchEvent(ev)
     }
 
-    fun setPagerToSync(pager: SyncPager) {
-        this.pagerToSync = pager
-    }
+    override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+        if (primary.isFakeDragging) return
+        if (!secondary.isFakeDragging) return
 
-    fun setForSuper(forSuper: Boolean) {
-        this.forSuper = forSuper
-    }
+        // Get page width.
+        val width = getPageWidth(primary)
 
-    override fun setCurrentItem(item: Int, smoothScroll: Boolean) {
-        if (!forSuper) {
-            pagerToSync?.forSuper = true
-            pagerToSync?.setCurrentItem(item, smoothScroll)
-            pagerToSync?.forSuper = false
+        // Get total pixel offset from beginning of list.
+        val absolutePosition = positionOffsetPixels + (position * width)
+
+        // If total position is greater than last time, we are scrolling to the left.
+        val scrollingLeft = (absolutePosition > lastAbsolutePosition)
+
+        // Update last absolute position.
+        lastAbsolutePosition = absolutePosition
+
+        // Get current pixel offset.
+        var dragVal: Float = positionOffsetPixels.toFloat()
+
+        // If page has changed...
+        if (lastPagePosition != position) {
+
+            // Figure out what item should be current for secondary.
+            var secondaryItem = absolutePosition / width
+            if (!scrollingLeft) {
+                secondaryItem += 1
+            }
+
+            // Set secondary current item.
+            secondary.setCurrentItem(secondaryItem, true)
+
+            // Adjust drag value by page delta * page width.
+            dragVal += (position - lastPagePosition) * getPageWidth(primary)
+
+            // Update last page position.
+            lastPagePosition = position
         }
-        super.setCurrentItem(item, smoothScroll)
+
+        // Get drag delta * multiplier.
+        dragVal = (lastScrollOffset - dragVal) * getScrollMultiplier()
+
+        // Fake drag secondary.
+        secondary.fakeDragBy(dragVal)
+
+        // Update last scroll value.
+        lastScrollOffset = positionOffsetPixels
     }
 
-    override fun setCurrentItem(item: Int) {
-        if (!forSuper) {
-            pagerToSync?.forSuper = true
-            pagerToSync?.setCurrentItem(item)
-            pagerToSync?.forSuper = false
-        }
-        super.setCurrentItem(item)
+    override fun onPageSelected(position: Int) {
+        lastPagePosition = position
+    }
 
+    /**
+     * Fake drag on secondary viewpager should be multiplied
+     * by the ratio of the widths of the pages of both pagers.
+     */
+    private fun getScrollMultiplier(): Float {
+        return getPageWidth(secondary).toFloat() / getPageWidth(primary)
+    }
+
+    /**
+     * Get the width of a page from a viewpager.
+     */
+    private fun getPageWidth(pager: ViewPager): Int {
+        return (pager.width - abs(pager.pageMargin))
     }
 }

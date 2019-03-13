@@ -4,4 +4,8 @@
     <dimen name="bev_card_width">328dp</dimen>
     <dimen name="bev_card_height">208dp</dimen>
 
+    <string name="bev_card_aspect_ratio">1:1577</string>
+
+    <dimen name="bev_card_margin">15dp</dimen>
+
 </resources>

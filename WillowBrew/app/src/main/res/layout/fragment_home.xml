@@ -8,45 +8,58 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tv1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:text="@string/hello_home_fragment" />
-
-        <com.willowtreeapps.willowbrew.SyncPager
-        android:id="@+id/bev_pager"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/hello_home_fragment"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv1"
-            app:layout_constraintBottom_toTopOf="@id/page_dots"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/card_background" />
 
         <android.support.design.widget.TabLayout
             android:id="@+id/page_dots"
             android:layout_width="220dp"
             android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/card_pager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:tabBackground="@drawable/page_dot_selector"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp"
-            app:tabMode="scrollable"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/bev_pager"
-            app:layout_constraintBottom_toTopOf="@id/card_pager"/>
+            app:tabMode="scrollable" />
 
-        <com.willowtreeapps.willowbrew.SyncPager
-            android:id="@+id/card_pager"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/bev_pager"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="@id/page_dots"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/page_dots"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.willowtreeapps.willowbrew.WrappingPager
+            android:id="@+id/card_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:layout_marginBottom="22dp"
+            android:clipToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 

@@ -4,9 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.constraint.ConstraintLayout
-        android:layout_width="@dimen/bev_card_width"
-        android:layout_height="@dimen/bev_card_height"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
         android:background="@drawable/card_corners">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="1.577:1"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <android.support.v7.widget.AppCompatImageView
             app:layout_constraintTop_toTopOf="parent"
