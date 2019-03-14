@@ -1,2 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <declare-styleable name="WrappingPager">
+
+        <!-- Whether to update the pager wrapping once, or on each page change. -->
+        <attr name="updateOnPageChange" format="boolean" />
+
+        <!-- Whether to wrap page height, width, or both. -->
+        <attr name="wrappingStyle" format="enum">
+            <enum name="wrapHeight" value="0" />
+            <enum name="wrapWidth" value="1" />
+            <enum name="wrapAll" value="2" />
+        </attr>
+
+    </declare-styleable>
+
+</resources>

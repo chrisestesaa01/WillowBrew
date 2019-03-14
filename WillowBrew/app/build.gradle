@@ -104,6 +104,11 @@ dependencies {
     kapt deps.dagger.compiler
     kaptTest deps.dagger.compiler
 
+    // App modules:
+    implementation(
+            project(path: ":wrappingpager")
+    )
+
     // App dependencies:
     implementation(
 

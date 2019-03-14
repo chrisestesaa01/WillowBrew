@@ -1,18 +1,19 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
 
-
+    // Compile and build tools versions:
+    compileSdkVersion deps.build.target_sdk
+    buildToolsVersion deps.build.build_tools
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+
+        // Min and target sdk:
+        minSdkVersion deps.build.min_sdk
+        targetSdkVersion deps.build.target_sdk
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
@@ -22,13 +23,33 @@ android {
         }
     }
 
+    // Compile with java 8.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
+
+    // Local jars:
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // App dependencies:
+    implementation(
+
+            // Kotlin:
+            deps.kotlin.lib,
+
+            // Support:
+            deps.support.v4,
+            deps.support.appcompat
+    )
+
+    // Test dependencies:
+    testImplementation deps.junit.lib
+    androidTestImplementation(
+            deps.support.testrunner,
+            deps.support.espresso
+    )
 }
