@@ -5,6 +5,11 @@ import android.support.v4.view.ViewPager
 import android.util.AttributeSet
 import android.view.View
 
+/**
+ * A ViewPager that can be set up to wrap it's content pages. It will wrap once when inflated,
+ * and can be set up to re wrap on each page change. It can be set to wrap the tallest page, the
+ * widest page, or both.
+ */
 class WrappingPager : ViewPager {
 
     // Update once, or update on each page change.
@@ -38,21 +43,20 @@ class WrappingPager : ViewPager {
             }
         }
 
-        // Add a listener to update the layout on page change.
-        this.addOnPageChangeListener(object: OnPageChangeListener {
-            override fun onPageScrollStateChanged(p0: Int) {}
-            override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {}
-            override fun onPageSelected(p0: Int) {
+        // If we want to update on every page change...
+        if (updateOnPageChange) {
 
-                // Request a layout to trigger a measure.
-                requestLayout()
+            // Add a listener to update the layout.
+            this.addOnPageChangeListener(object : OnPageChangeListener {
+                override fun onPageScrollStateChanged(p0: Int) {}
+                override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {}
+                override fun onPageSelected(p0: Int) {
 
-                // If not updating on page changes, then remove this listener.
-                if (!updateOnPageChange) {
-                    this@WrappingPager.removeOnPageChangeListener(this)
+                    // Request a layout to trigger a measure.
+                    requestLayout()
                 }
-            }
-        })
+            })
+        }
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
