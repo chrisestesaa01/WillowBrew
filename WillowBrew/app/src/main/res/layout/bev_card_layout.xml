@@ -6,14 +6,30 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+>
 
-        android:background="@drawable/card_corners">
+        <android.support.constraint.Guideline
+            android:id="@+id/start_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.1" />
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <android.support.constraint.Guideline
+            android:id="@+id/end_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9"/>
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintDimensionRatio="1.577:1"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/start_margin"
+            app:layout_constraintEnd_toEndOf="@id/end_margin"
+            android:background="@drawable/card_corners">
 
         <android.support.v7.widget.AppCompatImageView
             app:layout_constraintTop_toTopOf="parent"
@@ -62,7 +78,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/bev_date"
             tools:text="Malty, bready, and easy-drinking with a dash of Saaz hops"/>
-
+        </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>
 
 </layout>

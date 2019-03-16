@@ -125,7 +125,7 @@ class HomeFragment : Fragment() {
         pager.pageMargin = -700
 
         val foom = foo.getResources().getDimensionPixelOffset(R.dimen.bev_card_margin)
-        //foo.pageMargin = foom + 1
+   //     foo.pageMargin = foom + 2
     }
 
 

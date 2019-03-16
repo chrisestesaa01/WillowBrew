@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.ViewPager
 import android.R
 import android.content.Context
+import android.util.Log
 import android.view.View
 
 
@@ -43,18 +44,34 @@ class BeveragePagerAdapter(
     }
 
     override fun transformPage(page: View, position: Float) {
+        val a = page.width
+        val b = page.parent
+        val c = (b as ViewPager).width
+
+        val offset = ((c.toFloat() - a) / 2) / a
+        //Log.d("POS", "$position ")
+
+
+
+        var pos = position
+//        if (pos < offset) {
+//            pos = 1 - (offset - pos)
+//        } else {
+            pos = pos - offset
+//        }
+
         val myLinearLayout = page.findViewById(com.willowtreeapps.willowbrew.R.id.item_include) as CarouselLayout?
         var scale: Float = BIG_SCALE
-        if (position > 0) {
-            scale = scale - position * BeveragePagerAdapter.DIFF_SCALE
+        if (pos > 0) {
+            scale = scale - pos * BeveragePagerAdapter.DIFF_SCALE
         } else {
-            scale = scale + position * BeveragePagerAdapter.DIFF_SCALE
+            scale = scale + pos * BeveragePagerAdapter.DIFF_SCALE
         }
         var alpha: Float = 1f
-        alpha = if (position > 0) {
-            alpha - position * 0.9f
+        alpha = if (pos > 0) {
+            alpha - pos * 0.9f
         } else {
-            alpha + position * 0.9f
+            alpha + pos * 0.9f
         }
         myLinearLayout?.setScaleBoth(scale)
         myLinearLayout?.alpha = alpha
