@@ -28,7 +28,6 @@ class SyncPager(
     // Vars to hold values from one call to 'onPageScrolled' to the next.
     private var lastPagePosition = 0
     private var lastTotalPosition = 0f
-    private var lastSecondaryPosition = 0
 
     override fun onPageScrollStateChanged(state: Int) {
         if (primary.isFakeDragging) return
@@ -43,7 +42,6 @@ class SyncPager(
 
                 // Set page positions to settled values.
                 lastPagePosition = primary.currentItem
-                lastSecondaryPosition = (lastPagePosition * getAdjustedPageWidth(secondary))
                 lastTotalPosition = lastPagePosition.toFloat()
 
                 // If secondary was fake dragging...
@@ -87,14 +85,11 @@ class SyncPager(
         // Secondary position in pixels should be primary position * secondary page width.
         val desiredSecondaryPosition = absolutePosition * getAdjustedPageWidth(secondary)
 
-        // Calculate difference from last secondary position.
-        val deltaDrag = lastSecondaryPosition - (desiredSecondaryPosition.toInt())
+        // Calculate difference from current secondary position.
+        val deltaDrag = secondary.scrollX - (desiredSecondaryPosition.toInt())
 
         // Fake drag secondary.
         secondary.fakeDragBy(deltaDrag.toFloat())
-
-        // Update last secondary position.
-        lastSecondaryPosition -= deltaDrag
     }
 
     override fun onPageSelected(position: Int) {
