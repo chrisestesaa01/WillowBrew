@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="bev_card_width">328dp</dimen>
-    <dimen name="bev_card_height">208dp</dimen>
+    <!-- Page margin for beverage glass pages. -->
+    <dimen name="bev_glass_page_margin">220dp</dimen>
 
-    <string name="bev_card_aspect_ratio">1:1577</string>
+    <!-- Dimens to size the beverage card pages. -->
+    <item name="bev_card_start_margin" type="dimen">0.05</item>
+    <item name="bev_card_end_margin" type="dimen">0.95</item>
+    <item name="bev_card_aspect_ratio" type="dimen">1.577:1</item>
 
-    <dimen name="bev_card_margin">15dp</dimen>
+    <!-- Padding for text in the beverage cards. -->
+    <dimen name="bev_card_start_pad">14dp</dimen>
+    <dimen name="bev_card_top_pad">20dp</dimen>
+    <dimen name="bev_card_end_pad">80dp</dimen>
+    <dimen name="bev_card_changed_date_top_pad">10dp</dimen>
+    <dimen name="bev_card_description_top_pad">16dp</dimen>
+
+    <!-- Text sizes for beverage card. -->
+    <dimen name="bev_card_type_text">16sp</dimen>
+    <dimen name="bev_card_name_text">26sp</dimen>
+    <dimen name="bev_card_changed_text">14sp</dimen>
+    <dimen name="bev_card_warn_text">14sp</dimen>
+    <dimen name="bev_card_description_text">17sp</dimen>
 
 </resources>

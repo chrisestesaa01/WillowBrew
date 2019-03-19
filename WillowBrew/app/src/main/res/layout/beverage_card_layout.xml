@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Start margin guide for card. -->
+        <android.support.constraint.Guideline
+            android:id="@+id/start_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="@dimen/bev_card_start_margin" />
+
+        <!-- End margin guide for card. -->
+        <android.support.constraint.Guideline
+            android:id="@+id/end_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="@dimen/bev_card_end_margin"/>
+
+        <!-- Card layout. -->
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="@dimen/bev_card_aspect_ratio"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="@id/start_margin"
+            app:layout_constraintEnd_toEndOf="@id/end_margin"
+            android:background="@drawable/card_corners">
+
+            <!-- The little triangle image thing. -->
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/triangle_image"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:srcCompat="@drawable/ic_cold_brew"/>
+
+            <!-- Beverage type. -->
+            <TextView
+                android:id="@+id/bev_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BevCard.Type"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="BEER"/>
+
+            <!-- Beverage name. -->
+            <TextView
+                android:id="@+id/bev_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BevCard.Name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bev_type"
+                tools:text="Ponysaurus Belgian Pale Ale"/>
+
+            <!-- Keg last changed date. -->
+            <TextView
+                android:id="@+id/bev_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BevCard.Changed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bev_name"
+                tools:text="Changed 1/10/19"/>
+
+            <!-- Refill warning. -->
+            <TextView
+                android:id="@+id/refill_warning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BevCard.Warning"
+                app:layout_constraintStart_toEndOf="@id/bev_date"
+                app:layout_constraintTop_toTopOf="@id/bev_date"
+                tools:text="Need Refill"/>
+
+            <!-- Beverage description. -->
+            <TextView
+                android:id="@+id/bev_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/BevCard.Description"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/bev_date"
+                tools:text="Malty, bready, and easy-drinking with a dash of Saaz hops"/>
+
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

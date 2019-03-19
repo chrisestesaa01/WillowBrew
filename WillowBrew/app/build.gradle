@@ -132,6 +132,10 @@ dependencies {
             deps.nav.fragment,
             deps.nav.ui,
 
+            // RX:
+            deps.rxjava.lib,
+            deps.rxjava.android,
+
             // Firebase:
             deps.firebase.core,
             deps.firebase.database

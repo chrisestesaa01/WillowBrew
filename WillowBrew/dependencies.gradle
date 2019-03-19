@@ -36,6 +36,10 @@ versions.dagger = "2.21"
 // Nav arch:
 versions.navArch = "1.0.0-beta02"
 
+// Rxjava:
+versions.rxAndroid = "2.0.1"
+versions.rxJava = "2.1.8"
+
 // Firebase:
 versions.firebaseDatabase = "16.0.6"
 versions.firebaseCore = "16.0.7"
@@ -86,6 +90,11 @@ def nav = [:]
 nav.fragment = "android.arch.navigation:navigation-fragment-ktx:$versions.navArch"
 nav.ui = "android.arch.navigation:navigation-ui-ktx:$versions.navArch"
 
+// RXJava:
+def rxjava = [:]
+rxjava.lib = "io.reactivex.rxjava2:rxjava:$versions.rxJava"
+rxjava.android = "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
+
 // Firebase:
 def firebase = [:]
 firebase.core = "com.google.firebase:firebase-core:$versions.firebaseCore"
@@ -122,6 +131,7 @@ deps.support = support
 deps.lifecycle = lifecycle
 deps.dagger = dagger
 deps.nav = nav
+deps.rxjava = rxjava
 deps.firebase = firebase
 deps.junit = junit
 deps.build = build

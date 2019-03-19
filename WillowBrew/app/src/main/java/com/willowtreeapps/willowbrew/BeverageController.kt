@@ -1,6 +1,10 @@
 package com.willowtreeapps.willowbrew
 
+import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import com.willowtreeapps.willowbrew.beveragepage.BeveragePageModel
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -8,19 +12,17 @@ import javax.inject.Singleton
 class BeverageController @Inject constructor() {
 
 
-    private val foo = BeveragePageViewModel.BeverageModel(
-            BeveragePageViewModel.BeverageModel.Type.BEER,
-            67
-    )
-    private val beverages: List<BeveragePageViewModel.BeverageModel> = listOf(foo, foo, foo, foo, foo, foo, foo, foo, foo)
+    private val foo = BeveragePageModel(
+            R.drawable.bev_beer_50,
+            "50",
+            "BEER",
+            R.drawable.ic_cold_brew,
+            "A Tasty ColdBrew",
+            "01-01-19",
+            true,
+            "bev description here"
+            )
 
-    val bevs = MutableLiveData<List<BeveragePageViewModel.BeverageModel>>()
-    init {
-        bevs.value = beverages
-    }
-
-    fun getBeverage(index: Int): BeveragePageViewModel.BeverageModel? {
-        return beverages.getOrNull(index)
-    }
-
+    private val list = listOf(foo, foo, foo, foo, foo, foo, foo, foo, foo, foo)
+    fun getBevs() = list
 }

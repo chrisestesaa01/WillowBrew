@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/card_include"
-            layout="@layout/bev_card_layout" />
+            layout="@layout/beverage_card_layout" />
 
     </LinearLayout>
 

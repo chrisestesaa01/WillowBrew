@@ -3,6 +3,7 @@ package com.willowtreeapps.willowbrew
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import com.willowtreeapps.willowbrew.beveragepage.BeveragePageModel
 import javax.inject.Inject
 
 class BeveragePageViewModel @Inject constructor (
@@ -11,21 +12,18 @@ class BeveragePageViewModel @Inject constructor (
 
 
 
-    class BeverageModel(
-            val type: Type,
-            val percent: Int
-    ) {
-        enum class Type {
-            BEER,
-            COFFEE,
-            KOMBUCHA,
-            OTHER
-        }
 
+    fun getBeveragePageModel(position: Int): LiveData<BeveragePageModel> {
+
+        val data = MutableLiveData<BeveragePageModel>()
+        data.value = controller.getBevs().getOrNull(position)
+        return data
     }
 
-
-
-    fun getBevs() = controller.bevs
+    fun getBeverageListSize() : LiveData<Int> {
+        val data = MutableLiveData<Int>()
+        data.value = controller.getBevs().size
+        return data
+    }
 
 }

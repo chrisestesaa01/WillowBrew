@@ -1,21 +1,19 @@
 package com.willowtreeapps.willowbrew
 
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 
 import android.support.v4.view.ViewPager
-import android.util.Log
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.willowtreeapps.willowbrew.beveragepage.BeverageCardPagerAdapter
+import com.willowtreeapps.willowbrew.beveragepage.BeverageGlassPagerAdapter
 import com.willowtreeapps.willowbrew.databinding.FragmentHomeBinding
 import com.willowtreeapps.willowbrew.di.injectViewModel
-import java.util.concurrent.atomic.AtomicReference
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -61,14 +59,13 @@ class HomeFragment : Fragment() {
 
         sfm?.let {
             this.context?.let { c ->
-            val pagerAdapter = BeveragePagerAdapter(c, it)
+            val pagerAdapter = BeverageGlassPagerAdapter(c, it)
                 val cardAdapter = BeverageCardPagerAdapter(c, it);
             initPager(pagerAdapter, cardAdapter)
 
-                viewModel.getBevs().observe(this, Observer { bevs ->
-                    if (bevs == null) return@Observer
-                    //pagerAdapter.setItems(bevs)
-
+                viewModel.getBeverageListSize().observe(this, Observer { count ->
+                    cardAdapter.count = (count ?: 0)
+                    pagerAdapter.count = (count ?: 0)
                 })
 
             }}
@@ -106,7 +103,7 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun initPager(pagerAdapter: BeveragePagerAdapter, cardAdapter: BeverageCardPagerAdapter) {
+    private fun initPager(pagerAdapter: BeverageGlassPagerAdapter, cardAdapter: BeverageCardPagerAdapter) {
 
         val pager = binding?.bevPager ?: return
         pager.adapter = pagerAdapter
@@ -122,10 +119,10 @@ class HomeFragment : Fragment() {
 
         pager.currentItem = 0
         pager.offscreenPageLimit = 3
-        pager.pageMargin = -700
+        val bevPagerMagin = foo.getResources().getDimensionPixelOffset(R.dimen.bev_glass_page_margin)
 
-        val foom = foo.getResources().getDimensionPixelOffset(R.dimen.bev_card_margin)
-   //     foo.pageMargin = foom + 2
+        pager.pageMargin = -bevPagerMagin
+
     }
 
 

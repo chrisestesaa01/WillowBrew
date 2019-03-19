@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/item_include"
-            layout="@layout/bev_glass_layout" />
+            layout="@layout/beverage_glass_layout" />
 
     </LinearLayout>
 

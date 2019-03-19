@@ -15,4 +15,41 @@
 
     </style>
 
+
+
+    <style name="BevCard">
+        <item name="android:textColor">@color/dark_blue_grey</item>
+        <item name="android:layout_marginStart">@dimen/bev_card_start_pad</item>
+        <item name="android:paddingEnd">@dimen/bev_card_end_pad</item>
+    </style>
+
+    <style name="BevCard.Type">
+        <item name="android:textSize">@dimen/bev_card_type_text</item>
+        <item name="android:layout_marginTop">@dimen/bev_card_top_pad</item>
+    </style>
+
+    <style name="BevCard.Name">
+        <item name="android:textSize">@dimen/bev_card_name_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BevCard.Changed">
+        <item name="android:textSize">@dimen/bev_card_changed_text</item>
+        <item name="android:textColor">@color/medium_grey</item>
+        <item name="android:layout_marginTop">@dimen/bev_card_changed_date_top_pad</item>
+        <item name="android:paddingEnd">0dp</item>
+    </style>
+
+    <style name="BevCard.Warning">
+        <item name="android:textSize">@dimen/bev_card_warn_text</item>
+        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BevCard.Description">
+        <item name="android:textSize">@dimen/bev_card_warn_text</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:layout_marginTop">@dimen/bev_card_description_top_pad</item>
+    </style>
+
 </resources>
