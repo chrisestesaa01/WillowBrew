@@ -87,7 +87,7 @@ android {
         main {
             res.srcDirs = [
                     'src/main/res',
-                    'src/main/res_main',
+                    'src/main/res_shared',
                     'src/main/res_launcher',
                     'src/main/res_bev_drawables',
                     'src/main/res_home_page'

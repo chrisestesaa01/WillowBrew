@@ -2,6 +2,23 @@
 <resources>
 
 
+    <!--Style for toolbar:-->
+    <style name="ToolbarStyle">
+
+        <!--Toolbar background and elevation:-->
+        <item name="android:background">@color/dark_blue_grey</item>
+        <item name="android:elevation">@dimen/toolbar_elevation_standard</item>
+
+        <!--Text style for toolbar title:-->
+        <item name="titleTextAppearance">@style/ToolbarTitleStyle</item>
+
+    </style>
+
+    <style name="ToolbarTitleStyle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/toolbar_text_size_standard</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
     <style name="BeverageCard">
         <item name="android:textColor">@color/dark_blue_grey</item>
