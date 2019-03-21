@@ -10,12 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.willowtreeapps.willowbrew.R
-import com.willowtreeapps.willowbrew.databinding.FragmentBevCardBinding
+import com.willowtreeapps.willowbrew.databinding.BeverageCardFragmentBinding
 import com.willowtreeapps.willowbrew.di.injectViewModel
 
 class BeverageCardFragement : Fragment() {
 
-    private var binding: FragmentBevCardBinding? = null
+    private var binding: BeverageCardFragmentBinding? = null
 
     private val viewModel by injectViewModel { BeveragePageViewModel() }
 
@@ -40,7 +40,7 @@ class BeverageCardFragement : Fragment() {
         // Otherwise, inflate our view.
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_bev_card,
+                R.layout.beverage_card_fragment,
                 container,
                 false
         )
@@ -62,7 +62,7 @@ class BeverageCardFragement : Fragment() {
     /**
      * Bind page view.
      */
-    private fun bind(model: BeveragePageModel, binding: FragmentBevCardBinding) {
+    private fun bind(model: BeveragePageModel, binding: BeverageCardFragmentBinding) {
         binding.cardInclude.bevDate.text = model.changeDate
         binding.cardInclude.bevDescription.text = model.description
         binding.cardInclude.bevName.text = model.name

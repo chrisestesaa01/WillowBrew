@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+
+    <style name="BeverageCard">
+        <item name="android:textColor">@color/dark_blue_grey</item>
+        <item name="android:layout_marginStart">@dimen/beverage_card_start_pad</item>
+        <item name="android:paddingEnd">@dimen/beverage_card_end_pad</item>
+    </style>
+
+    <style name="BeverageCard.Type">
+        <item name="android:textSize">@dimen/beverage_card_type_text</item>
+        <item name="android:layout_marginTop">@dimen/beverage_card_top_pad</item>
+    </style>
+
+    <style name="BeverageCard.Name">
+        <item name="android:textSize">@dimen/beverage_card_name_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BeverageCard.Changed">
+        <item name="android:textSize">@dimen/beverage_card_changed_text</item>
+        <item name="android:textColor">@color/medium_grey</item>
+        <item name="android:layout_marginTop">@dimen/beverage_card_changed_date_top_pad</item>
+        <item name="android:paddingEnd">0dp</item>
+    </style>
+
+    <style name="BeverageCard.Warning">
+        <item name="android:textSize">@dimen/beverage_card_warn_text</item>
+        <item name="android:textColor">@color/dark_blue</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BeverageCard.Description">
+        <item name="android:textSize">@dimen/beverage_card_warn_text</item>
+        <item name="android:textColor">@color/dark_grey</item>
+        <item name="android:layout_marginTop">@dimen/beverage_card_description_top_pad</item>
+    </style>
+
+</resources>

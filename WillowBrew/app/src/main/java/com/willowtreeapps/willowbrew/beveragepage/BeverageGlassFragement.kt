@@ -10,12 +10,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.willowtreeapps.willowbrew.R
-import com.willowtreeapps.willowbrew.databinding.FragmentBevPageBinding
+import com.willowtreeapps.willowbrew.databinding.BeverageGlassFragmentBinding
 import com.willowtreeapps.willowbrew.di.injectViewModel
 
 class BeverageGlassFragement : Fragment() {
 
-    private var binding: FragmentBevPageBinding? = null
+    private var binding: BeverageGlassFragmentBinding? = null
 
     private val viewModel by injectViewModel { BeveragePageViewModel() }
 
@@ -42,7 +42,7 @@ class BeverageGlassFragement : Fragment() {
         // Otherwise, inflate our view.
         binding = DataBindingUtil.inflate(
                 inflater,
-                R.layout.fragment_bev_page,
+                R.layout.beverage_glass_fragment,
                 container,
                 false
         )
@@ -68,7 +68,8 @@ class BeverageGlassFragement : Fragment() {
     /**
      * Bind page view.
      */
-    private fun bind(model: BeveragePageModel, binding: FragmentBevPageBinding) {
+    private fun bind(model: BeveragePageModel, binding: BeverageGlassFragmentBinding
+    ) {
         binding.itemInclude.percentValue.text = model.percent
         context?.let {
             val drawable = ContextCompat.getDrawable(it, model.glassDrawable)

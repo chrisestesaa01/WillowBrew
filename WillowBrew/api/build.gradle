@@ -1,0 +1,87 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+android {
+
+    // Compile and build tools versions:
+    compileSdkVersion deps.build.target_sdk
+    buildToolsVersion deps.build.build_tools
+
+    defaultConfig {
+
+        // Min and target sdk:
+        minSdkVersion deps.build.min_sdk
+        targetSdkVersion deps.build.target_sdk
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Compile with java 8.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+
+    // Local jars:
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    kapt(
+            deps.kotshi.compiler,
+            deps.dagger.compiler
+    )
+
+    kaptTest(
+            deps.dagger.compiler
+    )
+
+    // App dependencies:
+    api(
+
+            // Kotlin:
+            deps.kotlin.lib,
+
+            // Support:
+            deps.support.v4,
+            deps.support.appcompat,
+
+            // Firebase:
+            deps.firebase.core,
+            deps.firebase.database,
+
+
+            //Http.
+            deps.squareup.retrofit,
+            deps.squareup.moshi,
+            deps.squareup.okhttp,
+            deps.squareup.logging_interceptor,
+
+            //Kotshi.
+            deps.kotshi.lib,
+
+            //Dagger.
+            deps.dagger.lib,
+
+            deps.squareup.retrofitcoroutines
+
+
+    )
+
+    // Test dependencies:
+    testImplementation deps.junit.lib
+    androidTestImplementation(
+            deps.support.testrunner,
+            deps.support.espresso
+    )
+}

@@ -5,145 +5,105 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 
-import android.support.v4.view.ViewPager
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.willowtreeapps.willowbrew.beveragepage.BeverageCardPagerAdapter
 import com.willowtreeapps.willowbrew.beveragepage.BeverageGlassPagerAdapter
-import com.willowtreeapps.willowbrew.databinding.FragmentHomeBinding
+import com.willowtreeapps.willowbrew.databinding.HomePageFragmentBinding
 import com.willowtreeapps.willowbrew.di.injectViewModel
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [HomeFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
-    private var binding: FragmentHomeBinding? = null
-
+    private var binding: HomePageFragmentBinding? = null
 
     private val viewModel by injectViewModel { BeveragePageViewModel() }
 
+    override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(
+                inflater,
+                R.layout.home_page_fragment,
+                container,
+                false
+        )
 
+        initPagers()
+        initRefreshSwiper()
+        initPageDots()
 
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
-
-        val sfm = activity?.supportFragmentManager
-
-        sfm?.let {
-            this.context?.let { c ->
-            val pagerAdapter = BeverageGlassPagerAdapter(c, it)
-                val cardAdapter = BeverageCardPagerAdapter(c, it);
-            initPager(pagerAdapter, cardAdapter)
-
-                viewModel.getBeverageListSize().observe(this, Observer { count ->
-                    cardAdapter.count = (count ?: 0)
-                    pagerAdapter.count = (count ?: 0)
-                })
-
-            }}
-
-        val pageDots = binding?.pageDots
-        pageDots?.setupWithViewPager(binding?.bevPager, true)
-
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_home, container, false)
         return binding?.root
     }
 
+    private fun initPagers() {
 
-    private val listener = object : ViewPager.OnPageChangeListener {
+        // Get fragment manager and context.
+        val sfm = activity?.supportFragmentManager ?: return
+        val context = this.context ?: return
 
-        private var jp: Int = -1
+        // Get pagers.
+        val glassPager = binding?.layoutInclude?.glassPager ?: return
+        val cardPager = binding?.layoutInclude?.cardPager ?: return
 
-        override fun onPageScrollStateChanged(p0: Int) {
-            if (ViewPager.SCROLL_STATE_IDLE == p0 && jp >= 0) {
-                binding?.bevPager?.setCurrentItem(jp, false)
-                jp = -1
-            }
-        }
+        // Create pager adapters.
+        val pagerAdapter = BeverageGlassPagerAdapter(context, sfm)
+        val cardAdapter = BeverageCardPagerAdapter(context, sfm)
 
-        override fun onPageScrolled(p0: Int, p1: Float, p2: Int) {
-        }
+        // Set adapters for pagers.
+        glassPager.adapter = pagerAdapter
+        cardPager.adapter = cardAdapter
 
-        override fun onPageSelected(p0: Int) {
-            when (p0) {
-                0 -> jp = 10
-                10 -> jp = 1
-                else -> {}
-            }
-        }
+        // Synchronize the two pagers.
+        SyncPager.synchronizePagers(glassPager, cardPager)
 
+        // Set page transformer for the glass pager.
+        glassPager.setPageTransformer(false, pagerAdapter)
+
+        // Set up glass pager to show side items.
+        glassPager.currentItem = 0
+        glassPager.offscreenPageLimit = 3
+
+        val bevPagerMagin = cardPager
+                .getResources()
+                .getDimensionPixelOffset(R.dimen.beverage_glass_page_margin)
+
+        glassPager.pageMargin = -bevPagerMagin
+
+        // Bind pager item count to viewmodel.
+        viewModel.getBeverageListSize().observe(this, Observer { count ->
+            cardAdapter.count = (count ?: 0)
+            pagerAdapter.count = (count ?: 0)
+        })
     }
 
-    private fun initPager(pagerAdapter: BeverageGlassPagerAdapter, cardAdapter: BeverageCardPagerAdapter) {
+    private fun initRefreshSwiper() {
 
-        val pager = binding?.bevPager ?: return
-        pager.adapter = pagerAdapter
+        // Block refresh swipe when pagers are scrolling.
+        binding?.refreshSwiper?.let {
+            it.blockWhenScrolling(binding?.layoutInclude?.glassPager)
+            it.blockWhenScrolling(binding?.layoutInclude?.cardPager)
+        }
 
-        val foo = binding?.cardPager ?: return
-        foo.adapter = cardAdapter
+        // Call to vm when refresh swipe occurs.
+        binding?.refreshSwiper?.setOnRefreshListener {
+            viewModel.onPullToRefresh()
+        }
 
-        SyncPager.synchronizePagers(pager, foo)
-
-
-
-        pager.setPageTransformer(false, pagerAdapter)
-
-        pager.currentItem = 0
-        pager.offscreenPageLimit = 3
-        val bevPagerMagin = foo.getResources().getDimensionPixelOffset(R.dimen.bev_glass_page_margin)
-
-        pager.pageMargin = -bevPagerMagin
-
+        // Listen to vm for signal that refresh is complete.
+        viewModel.pullToRefreshComplete.observe( this, Observer { refreshComplete ->
+            binding?.refreshSwiper?.isRefreshing = (true == refreshComplete)
+        })
     }
 
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                HomeFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+    private fun initPageDots() {
+        val pageDots = binding?.layoutInclude?.pageDots
+        pageDots?.setupWithViewPager(
+                binding?.layoutInclude?.glassPager,
+                true
+        )
     }
 }
-

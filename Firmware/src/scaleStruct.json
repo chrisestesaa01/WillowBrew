@@ -1,10 +1,19 @@
 {
-    "calibrateFlag" : false,
-    "calibrationPoint" : 0,
-    "calibrationValue" : 0,
-    "zeroFlag" : false,
-    "zeroPoint" : 0,
-    "currentValue" : 0,
-    "kegName" : "",
-    "lastChanged" : ""
+    "calibration" : {
+        "calibrateFlag" : false,
+        "calibrationPoint" : 0,
+        "calibrationValue" : 0,
+        "zeroFlag" : false,
+        "zeroPoint" : 0
+    },
+    "kegInfo" : {
+        "kegName" : "",
+        "lastChanged" : ""
+    },
+    "weightData" : {
+        "uid" : {
+            "timeStamp" : 0,
+            "value" : 0
+        }
+    }
 }

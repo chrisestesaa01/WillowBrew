@@ -13,7 +13,7 @@
         android:id="@+id/homeFragment"
         android:name="com.willowtreeapps.willowbrew.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/home_page_fragment" />
     <fragment
         android:id="@+id/splashFragment"
         android:name="com.willowtreeapps.willowbrew.SplashFragment"

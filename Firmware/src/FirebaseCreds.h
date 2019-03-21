@@ -3,4 +3,4 @@
  **/
 
 #define FIREBASE_HOST "kegscale-eafce.firebaseio.com"
-#define FIREBASE_AUTH "bHbqDTA5DlFV9j0q4OdPRYKLUs6TGEfxPWbzOZks"
+#define FIREBASE_AUTH "Rq0cZiXNpWaio6eTodVGyoFSWp9cRlDZGpSBwocS"

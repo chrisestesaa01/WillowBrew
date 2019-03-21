@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val database = FirebaseDatabase.getInstance()
-        val myRef = database.getReference("scale0/zeroPoint")
+        val myRef = database.getReference("scales/0/calibration/zeroPoint")
 
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

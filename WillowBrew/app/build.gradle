@@ -89,7 +89,8 @@ android {
                     'src/main/res',
                     'src/main/res_main',
                     'src/main/res_launcher',
-                    'src/main/res_bev_drawables'
+                    'src/main/res_bev_drawables',
+                    'src/main/res_home_page'
             ]
         }
     }
@@ -106,7 +107,8 @@ dependencies {
 
     // App modules:
     implementation(
-            project(path: ":wrappingpager")
+            project(path: ":wrappingpager"),
+            project(path: ":api")
     )
 
     // App dependencies:
@@ -114,6 +116,7 @@ dependencies {
 
             // Kotlin:
             deps.kotlin.lib,
+            deps.kotlin.coroutines,
 
             // Support:
             deps.support.v4,
@@ -139,6 +142,7 @@ dependencies {
             // Firebase:
             deps.firebase.core,
             deps.firebase.database
+
     )
 
     // Test dependencies:

@@ -33,6 +33,12 @@ versions.archComponents = "1.1.1"
 // Dagger:
 versions.dagger = "2.21"
 
+// Squareup:
+versions.retrofit = "2.4.0"
+versions.okHttp = "3.10.0"
+versions.coroutinesadapter = "0.9.2"
+
+
 // Nav arch:
 versions.navArch = "1.0.0-beta02"
 
@@ -55,8 +61,10 @@ versions.multiDex = "1.0.3"
  */
 
 // Kotlin:
+versions.kotlin_coroutines = "1.1.1"
 def kotlin = [:]
 kotlin.lib = "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
+kotlin.coroutines = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.kotlin_coroutines"
 
 // Plugins:
 def plugins = [:]
@@ -85,6 +93,16 @@ def dagger = [:]
 dagger.lib = "com.google.dagger:dagger:$versions.dagger"
 dagger.compiler = "com.google.dagger:dagger-compiler:$versions.dagger"
 
+// Squareup http libs:
+def squareup = [:]
+squareup.retrofit = "com.squareup.retrofit2:retrofit:$versions.retrofit"
+squareup.moshi = "com.squareup.retrofit2:converter-moshi:$versions.retrofit"
+squareup.okhttp = "com.squareup.okhttp3:okhttp:$versions.okHttp"
+squareup.logging_interceptor = "com.squareup.okhttp3:logging-interceptor:$versions.okHttp"
+squareup.mockwebserver = "com.squareup.okhttp3:mockwebserver:$versions.okHttp"
+
+squareup.retrofitcoroutines = "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$versions.coroutinesadapter"
+
 // Nav arch:
 def nav = [:]
 nav.fragment = "android.arch.navigation:navigation-fragment-ktx:$versions.navArch"
@@ -99,6 +117,14 @@ rxjava.android = "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
 def firebase = [:]
 firebase.core = "com.google.firebase:firebase-core:$versions.firebaseCore"
 firebase.database = "com.google.firebase:firebase-database:$versions.firebaseDatabase"
+
+// Kotshi:
+versions.kotshi = "1.0.2"
+
+// Kotshi annotation processor for moshi:
+def kotshi = [:]
+kotshi.lib = "se.ansman.kotshi:api:$versions.kotshi"
+kotshi.compiler = "se.ansman.kotshi:compiler:$versions.kotshi"
 
 // JUnit:
 def junit = [:]
@@ -131,7 +157,9 @@ deps.support = support
 deps.lifecycle = lifecycle
 deps.dagger = dagger
 deps.nav = nav
+deps.kotshi = kotshi
 deps.rxjava = rxjava
+deps.squareup = squareup
 deps.firebase = firebase
 deps.junit = junit
 deps.build = build

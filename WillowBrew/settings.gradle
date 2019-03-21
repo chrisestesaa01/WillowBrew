@@ -1,1 +1,1 @@
-include ':app', ':wrappingpager'
+include ':app', ':wrappingpager', ':api'

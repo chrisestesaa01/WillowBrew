@@ -36,12 +36,12 @@ bool ledState = true;
 HX711 scales[NUM_SCALES] = { HX711(0, 4) };
 
 // Paths to firebase values.
-const String ZERO_FLAG = "zeroFlag";
-const String CALIBRATE_FLAG = "calibrateFlag";
-const String ZERO_POINT = "zeroPoint";
-const String CALIBRATION_POINT = "calibrationPoint";
-const String CALIBRATION_VALUE = "calibrationValue";
-const char* SCALE_PATH = "scale%d";
+const String ZERO_FLAG = "calibration/zeroFlag";
+const String CALIBRATE_FLAG = "calibration/calibrateFlag";
+const String ZERO_POINT = "calibration/zeroPoint";
+const String CALIBRATION_POINT = "calibration/calibrationPoint";
+const String CALIBRATION_VALUE = "calibration/calibrationValue";
+const char* SCALE_PATH = "scales/%d";
 
 // Max scale value for sanity checking.
 const int MAX_SCALE_VAL = 100000;
@@ -167,12 +167,12 @@ void checkData(int index, float newValue) {
         // Create JSON object with new value and a timestamp.
         DynamicJsonBuffer buff;
         JsonObject& scaleVal = buff.createObject();
-        JsonObject& timeStamp = scaleVal.createNestedObject("time");
+        JsonObject& timeStamp = scaleVal.createNestedObject("timeStamp");
         timeStamp[".sv"] = "timestamp";
         scaleVal["value"] = _newValue;
 
         // Push new val to firebase and update the check value.
-        Firebase.push(pathToScale(index, "currentValue"), scaleVal);
+        Firebase.push(pathToScale(index, "weightData"), scaleVal);
         lastVals[index] = _newValue;
     }
 }
