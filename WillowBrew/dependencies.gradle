@@ -10,16 +10,16 @@ ext.deps = [:]
 def versions = [:]
 
 // Kotlin:
-versions.kotlin = "1.3.21"
+versions.kotlin = '1.6.21'
 
 // Gradle plugin:
-versions.gradlePlugin = "3.3.1"
+versions.gradlePlugin = '7.4.2'
 
 // Dependency update plugin:
 versions.dependencyUpdatePlugin = "0.20.0"
 
 // Google services plugin:
-versions.googlePlugin = "4.2.0"
+versions.googlePlugin = '4.3.10'
 
 // Support:
 versions.support = "28.0.0"

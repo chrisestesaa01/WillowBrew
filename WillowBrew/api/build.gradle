@@ -6,7 +6,6 @@ android {
 
     // Compile and build tools versions:
     compileSdkVersion deps.build.target_sdk
-    buildToolsVersion deps.build.build_tools
 
     defaultConfig {
 

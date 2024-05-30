@@ -31,7 +31,6 @@ android {
 
     // Compile and build tools versions:
     compileSdkVersion deps.build.target_sdk
-    buildToolsVersion deps.build.build_tools
 
     defaultConfig {
 
@@ -144,6 +143,8 @@ dependencies {
             deps.firebase.database
 
     )
+
+    //compileOnly 'com.github.pengrad:jdk9-deps:1.0'
 
     // Test dependencies:
     testImplementation deps.junit.lib

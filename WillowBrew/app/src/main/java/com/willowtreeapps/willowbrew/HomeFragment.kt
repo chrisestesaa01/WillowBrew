@@ -40,26 +40,26 @@ class HomeFragment : Fragment() {
         return binding?.root
     }
 
-    private fun initializeActionBar() {
-
-        val activity = this.activity ?: return
-        val binding = this.binding ?: return
-        if (activity !is AppCompatActivity) return
-
-            activity.setSupportActionBar(binding.toolbar)
-
-        setHasOptionsMenu(true)
-
-        // Enable home button.
-        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        // Set appropriate icon on home button.
-        val drawable = if (showBack) R.drawable.ic_arrow_back else R.drawable.ic_menu
-        supportActionBar?.setHomeAsUpIndicator(drawable)
-
-        // Show actionbar.
-        supportActionBar?.show()
-    }
+//    private fun initializeActionBar() {
+//
+//        val activity = this.activity ?: return
+//        val binding = this.binding ?: return
+//        if (activity !is AppCompatActivity) return
+//
+//            activity.setSupportActionBar(binding.toolbar)
+//
+//        setHasOptionsMenu(true)
+//
+//        // Enable home button.
+//        activity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+//
+//        // Set appropriate icon on home button.
+//        val drawable = if (showBack) R.drawable.ic_arrow_back else R.drawable.ic_menu
+//        supportActionBar?.setHomeAsUpIndicator(drawable)
+//
+//        // Show actionbar.
+//        supportActionBar?.show()
+//    }
 
     private fun initPagers() {
 
